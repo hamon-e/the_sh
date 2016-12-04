@@ -1,0 +1,7 @@
+function ls
+  if test -t 1
+    command ls --color=auto --indicator-style=classify $argv
+  else
+    command ls $argv
+  end
+end

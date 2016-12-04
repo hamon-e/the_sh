@@ -1,0 +1,74 @@
+start:
+comma_tcsh
+
+comma_tcsh:
+or_tcsh (((';' | ('\n')) [space]*)+ or_tcsh)*
+
+or_tcsh:
+and_tcsh ("||" and_tcsh)*
+
+and_tcsh:
+pipeline ("&&" pipeline)*
+
+pipeline:
+parentheses ('|' parentheses)*
+
+parentheses:
+[space]* '(' comma_tcsh ')' [space]* | command
+
+command:
+[space]* comp_string ([space]+ ([space]+ | redirection | spe_string)*)? [space]*
+
+spe_string:
+(variable | substitution | comp_string)+
+
+comp_string:
+(inhibiter | single_quotes | double_quotes | string)+
+
+inhibiter:
+'\' .
+
+single_quotes:
+''' ("\'" | ('''- .))* '''
+
+double_quotes:
+'"' (variable | substitution | "\"" | ('"'- .))* '"'
+
+string:
+(('|' | '&' | ';' | '<' | '>' | '(' | ')' | '$' | '`' | ''' | '"' | '\' | '\t' | '\n' | ' ' | '#')- .)+
+
+variable:
+'$' alphanum_string ('[' index ']')?
+
+alphanum_string:
+({a..z} | {A..Z} | {0..9} | '_')+
+
+index:
+[space]* number (".." number)? ([space]+ index?)?
+
+number:
+'-'? {1..9}+
+
+substitution:
+'`' [space]* comma_tcsh '`' ('[' index ']')?
+
+redirection:
+((double_left_redir | left_redir) | fd_out? (double_right_redir | right_redir)) [space]* comp_string
+
+left_redir:
+'<'
+
+double_left_redir:
+"<<"
+
+fd_out:
+'1' | '2'
+
+right_redir:
+'>'
+
+double_right_redir:
+">>"
+
+space:
+' ' | '\t' | ('\' '\n')

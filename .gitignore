@@ -1,0 +1,12 @@
+42sh
+42sh_db
+./tmp
+./old
+*.o
+*.o.db
+*.a
+*.d
+tags
+types_c.taghl
+a.out
+.historic

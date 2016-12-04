@@ -1,0 +1,4 @@
+function prompt_pwd
+  set -l realhome ~
+  echo $PWD | sed -e "s|^"$realhome"|~|" -e 's-\([^/.]\)[^/]*/-\1/-g'
+end

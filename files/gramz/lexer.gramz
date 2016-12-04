@@ -1,0 +1,74 @@
+start:
+lexer
+
+lexer:
+(combiners | end | reserved_end_key_word | reserved_key_word | command | [space]+)+
+
+combiners:
+(";" ([space]* ("and" | "not" | "or"))? | '|' | '&')+
+
+command:
+reserved_string- comp_string ([space]+ ([space]+ | redirection | spe_string)*)?
+
+reserved_string:
+"end" | "if" | "else" | "for" | "switch" | "case" | "while" | "function"
+
+end:
+"end"
+
+reserved_end_key_word:
+"if" | "for" | "switch" | "while" | "function"
+
+reserved_key_word:
+"else if" | "case" | "else"
+
+spe_string:
+(variable | substitution | comp_string)+
+
+comp_string:
+(inhibiter | single_quotes | double_quotes | string)+
+
+inhibiter:
+'\' .
+
+single_quotes:
+''' ("\'" | ('''- .))* '''
+
+double_quotes:
+'"' (variable | substitution | "\"" | ('"'- .))* '"'
+
+string:
+(('|' | '&' | ';' | '<' | '>' | '(' | ')' | '$' | '`' | ''' | '"' | '\' | '\t' | '\n' | ' ' | '#')- .)+
+
+variable:
+'$' alphanum_string ('[' index ']')?
+
+alphanum_string:
+({a..z} | {A..Z} | {0..9} | '_')+
+
+index:
+[space]* number (".." number)? ([space]+ index?)?
+
+number:
+'-'? {1..9}+
+
+substitution:
+pth_o [space]* lexer pth_c ('[' index ']')?
+
+pth_o:
+'('
+
+pth_c:
+')'
+
+redirection:
+fd_out? redir_op [space]* comp_string?
+
+redir_op:
+"<<" | "<" | ">>" | ">"
+
+fd_out:
+'1' | '2'
+
+space:
+(' ' | '\t')

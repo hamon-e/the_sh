@@ -1,0 +1,3 @@
+function the_init
+  fortune -a
+end

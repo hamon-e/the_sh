@@ -1,0 +1,125 @@
+start:
+entry
+
+entry:
+([space]* background? [space]* [comment]? (((';' | '\n')+ [space]*)+ entry?)?)!
+
+background:
+combiners ([space]* ampersand [space]* combiners)* [space]* ampersand?
+
+ampersand:
+'&'
+
+combiners:
+((and | or | not) [space]+)? pipeline
+
+and:
+"and"
+
+or:
+"or"
+
+not:
+"not"
+
+pipeline:
+action [space]* ('|' [space]* action)*
+
+action:
+script | command
+
+script:
+function | while | for | if | switch
+
+function:
+"function" [space]+ comp_string [space]* (';' | '\n') [space]* entry? "end"
+
+while:
+"while" [space]+ combiners [space]* (';' | '\n') [space]* entry? "end"
+
+for:
+"for" [space]+ alphanum_string [space]+ "in" for_list (';' | '\n') [space]* entry? "end"
+
+for_list:
+([space]+ ([space]+ | spe_string)+)
+
+if:
+condition ("else" [space]+ condition)* else? "end"
+
+condition:
+"if" [space]+ combiners [space]* (';' | '\n') [space]* entry?
+
+else:
+"else" [space]* (';' | '\n') [space]* entry?
+
+switch:
+"switch" [space]+ spe_string [space]* (';' | '\n') [space]* case* "end"
+
+case:
+"case" ([space]+ ([space]+ | spe_string)+)? (';' | '\n') [space]* entry?
+
+command:
+reserved_string- comp_string ([space]+ ([space]+ | redirection | spe_string)*)?
+
+reserved_string:
+"else" | "case" | "end"
+
+spe_string:
+(variable | substitution | comp_string)+
+
+comp_string:
+(inhibiter | single_quotes | double_quotes | string)+
+
+inhibiter:
+'\' .
+
+single_quotes:
+''' ("\'" | ('''- .))* '''
+
+double_quotes:
+'"' (variable | substitution | "\"" | ('"'- .))* '"'
+
+string:
+(('|' | '&' | ';' | '<' | '>' | '(' | ')' | '$' | '`' | ''' | '"' | '\' | '\t' | '\n' | ' ' | '#')- .)+
+
+variable:
+'$' alphanum_string ('[' index ']')?
+
+alphanum_string:
+({a..z} | {A..Z} | {0..9} | '_')+
+
+index:
+[space]* ((range | number) (' ' | '\t' | ('\' '\n'))*)+
+
+range:
+number ".." number
+
+number:
+'-'? {1..9}+
+
+substitution:
+'(' [space]* entry ')' ('[' index ']')?
+
+redirection:
+((double_left_redir | left_redir) | fd_out? (double_right_redir | right_redir)) [space]* comp_string
+
+left_redir:
+'<'
+
+double_left_redir:
+"<<"
+
+fd_out:
+'1' | '2'
+
+right_redir:
+'>'
+
+double_right_redir:
+">>"
+
+space:
+' ' | '\t' | ('\' '\n')
+
+comment:
+'#' ('\n'- .)*

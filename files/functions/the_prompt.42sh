@@ -1,0 +1,40 @@
+function _git_branch_name
+  echo (command git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||')
+end
+
+function _is_git_dirty
+  echo (command git status -s --ignore-submodules=dirty 2>/dev/null)
+end
+
+function the_prompt
+  set -l laststatus $status
+  set -l cyan (set_color cyan)
+  set -l yellow (set_color yellow)
+  set -l red (set_color red)
+  set -l blue (set_color blue)
+  set -l green (set_color green)
+  set -l normal (set_color reset)
+
+  if test $laststatus = 0
+      set arrow $green➜\ \ 
+  else
+      set arrow $red➜\ \ 
+  end
+
+  set -l cwd $cyan(basename (prompt_pwd))
+
+  if test (_git_branch_name)
+    set -l gitbranch $red(_git_branch_name)
+    set gitinfo $blue\ git:\(\ $gitbranch$blue\)
+
+    if test (_is_git_dirty)
+      set -l dirty $yellow\ ✗
+      set gitinfo $gitinfo$dirty
+    end
+
+    echo -ns $arrow $cwd $gitinfo $normal ' '
+  else
+    echo -ns $arrow $cwd $normal ' '
+  end
+end
+

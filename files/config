@@ -1,0 +1,28 @@
+[fish_path]
+  grammar = 
+  lexer = 
+  functions = 
+  autocomplete = 
+  tmp = 
+
+[fish_function]
+  prompt = 
+  init = 
+
+[fish_builtins]
+  lib = 
+  names = , 
+
+[fish_parser]
+  lib = 
+  build = ,
+  exec = .
+
+[fish]
+  path = fish_path
+  function = fish_function
+  builtins = fish_builtins
+  parser = fish_parser
+
+[42sh]
+  shell = fish

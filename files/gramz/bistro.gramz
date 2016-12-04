@@ -1,0 +1,26 @@
+plus:
+'+'
+
+min:
+'-'
+
+mul:
+'*'
+
+div:
+'/'
+
+mod:
+'%'
+
+num:
+[0-9]+ | '(' start ')'
+
+ope_high:
+num ((mul | div | mod) num)*
+
+ope_low:
+ope_high ((plus | min) ope_high)*
+
+start:
+ope_low
