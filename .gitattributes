@@ -1,2 +1,3 @@
 Makefile linguist-vendored
 files/complete/* linguist-vendored
+files/functions/* linguist-vendored
