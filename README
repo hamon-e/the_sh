@@ -1,3 +1,8 @@
 #the_sh
+j
+The Shell.
 
-A shell that look like fish
+It parses a grammar to define itself.
+By default it parses fish's grammar.
+
+Have fun.
