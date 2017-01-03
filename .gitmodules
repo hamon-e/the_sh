@@ -1,9 +1,9 @@
 [submodule "the_parser"]
 	path = the_parser
-	url = git@github.com:hamon-e/the_parser
+	url = https://github.com/hamon-e/the_parser
 [submodule "opt_parser"]
 	path = opt_parser
-	url = git@github.com:hamon-e/opt_parser
+	url = https://github.com/hamon-e/opt_parser
 [submodule "tools"]
 	path = tools
-	url = git@github.com:hamon-e/tools
+	url = https://github.com/hamon-e/tools
