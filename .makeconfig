@@ -1,18 +1,18 @@
 name:
 42sh
 
-submodules:
-opt_parser
-the_parser
-tools
-
-cflags:
+flags:
 Wall
 Wextra
 O2
 
-lib:
+libs:
 ncurses
+
+submodules:
+opt_parser
+the_parser
+tools
 
 [/]
 main.c
